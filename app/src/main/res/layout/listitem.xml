@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/newslayout"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:padding="16dp">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="top"
+        android:orientation="horizontal">
+
+        <TextView
+            android:id="@+id/headline"
+            android:layout_width="230dp"
+            android:layout_height="100dp"
+            android:paddingRight="16dp"
+            android:textColor="@android:color/black"
+            android:textSize="18sp"
+            android:textStyle="bold"
+            tools:text="IPL 2018,Rajasthan Royals Vs Kolkata Night Riders, Highlights:" />
+
+        <ImageView
+            android:id="@+id/newsImage"
+            android:layout_width="110dp"
+            android:layout_height="100dp"
+            tools:src="@drawable/pc" />
+
+
+    </LinearLayout>
+
+    <TextView
+        android:id="@+id/newsSource"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textColor="@android:color/black"
+        android:layout_marginTop="4dp"
+        tools:text="Hindustan Times"/>
+
+    <TextView
+        android:id="@+id/newsPublishedAt"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textColor="#999999"
+        tools:text="2018-04-18T17:02:49Z"/>
+
+</LinearLayout>
