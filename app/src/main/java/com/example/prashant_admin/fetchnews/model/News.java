@@ -1,8 +1,13 @@
 package com.example.prashant_admin.fetchnews.model;
 
+import android.os.Parcel;
+import android.os.Parcelable;
+
 import com.google.gson.annotations.SerializedName;
 
-public class News {
+import java.io.Serializable;
+
+public class News implements Parcelable{
     @SerializedName("source")
     private Source source ;
     @SerializedName("author")
@@ -83,4 +88,47 @@ public class News {
     public void setSource(Source source) {
         this.source = source;
     }
+
+    public News(Parcel in) {
+        readFromParcel(in);
+    }
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+        dest.writeString(author);
+        dest.writeString(title);
+        dest.writeString(url);
+        dest.writeString(urlToImage);
+        dest.writeString(publishedAt);
+        dest.writeString(description);
+        dest.writeParcelable(source,flags);
+    }
+
+    private void readFromParcel(Parcel in) {
+        source = in.readParcelable(Source.class.getClassLoader());
+        author = in.readString();
+        title = in.readString();
+        url = in.readString();
+        urlToImage = in.readString();
+        description = in.readString();
+        publishedAt = in.readString();
+
+    }
+
+    public static final Parcelable.Creator CREATOR =
+            new Parcelable.Creator() {
+                public News createFromParcel(Parcel in) {
+                    return new News(in);
+                }
+
+                public News[] newArray(int size) {
+                    return new News[size];
+                }
+            };
+
 }

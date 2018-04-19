@@ -1,0 +1,92 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_height="match_parent"
+    android:layout_width="match_parent">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        tools:context=".DetailNewsFragment"
+        android:orientation="vertical">
+
+        <ImageView
+            android:id="@+id/DetailImage"
+            android:layout_width="match_parent"
+            android:layout_height="200dp"
+            android:scaleType="fitXY"
+            android:src="@drawable/news"/>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:padding="16dp"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/DetailTitle"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:fontFamily="serif"
+                tools:text="IPL 2018,Rajasthan Royals Vs Kolkata Night Riders, Highlights"
+                android:textColor="@android:color/black"
+                android:textSize="26sp"
+                android:textStyle="bold"/>
+            <View
+                android:layout_width="300dp"
+                android:layout_height="1dp"
+                android:background="#999999"
+                android:layout_marginTop="2dp"/>
+
+            <TextView
+                android:id="@+id/DetailNewsSource"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textColor="@android:color/black"
+                android:layout_marginTop="2dp"
+                tools:text="Hindustan Times"/>
+
+            <TextView
+                android:id="@+id/DetailNewsPublishedAt"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textColor="#999999"
+                tools:text="2018-04-18T17:02:49Z"/>
+
+            <TextView
+                android:id="@+id/DetailDescription"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="20dp"
+                android:textColor="@android:color/black"
+                android:fontFamily="sans-serif-condensed"
+                android:textSize="18sp"
+                tools:text="The rupee has depreciated by a staggering 60 paise in the recent spell of downtrend."/>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="20dp"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Source: "/>
+
+                <TextView
+                    android:id="@+id/DetailNewsUrl"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:autoLink="web"
+                    android:text="www.google.com"/>
+
+            </LinearLayout>
+
+
+
+        </LinearLayout>
+    </LinearLayout>
+
+</ScrollView>
