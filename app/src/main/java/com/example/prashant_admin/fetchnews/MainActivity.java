@@ -50,12 +50,16 @@ public class MainActivity extends AppCompatActivity {
         }else if (isHomeActive){
             super.onBackPressed();
         }
-        else {
+        else if (lastSelectedNavItem == R.id.nav_saved_fragment ||
+                lastSelectedNavItem == R.id.nav_settings_fragment){
             getSupportFragmentManager().popBackStack();
             navigationView.getMenu().getItem(0).setChecked(true);
             setTitle(R.string.home);
             lastSelectedNavItem = R.id.nav_home_fragment;
             isHomeActive = true;
+        }
+        else{
+            getSupportFragmentManager().popBackStack();
         }
     }
     @Override

@@ -91,7 +91,7 @@ public class SavedNewsDetailFragment extends Fragment {
                          NewsEntry.COLUMN_URL + " = ? AND "+ NewsEntry.COLUMN_URL_TO_IMAGE + " = ? AND " + NewsEntry.COLUMN_PUBLISHED_AT + " = ?",
                         contentValues.toArray(new String[contentValues.size()]));
                 Toast.makeText(getContext(),"Successfully Deleted the Post",Toast.LENGTH_SHORT).show();
-                Objects.requireNonNull(getActivity()).getSupportFragmentManager().popBackStack();
+                Objects.requireNonNull(getActivity()).getSupportFragmentManager().popBackStack("savednews",1);
                 Fragment fragment = new SavedNews();
                 getActivity().getSupportFragmentManager().beginTransaction()
                         .replace(R.id.fragment_container,fragment)

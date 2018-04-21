@@ -83,7 +83,7 @@ public class SavedNews extends Fragment{
                 bundle.putParcelable("news", n);
                 fragment.setArguments(bundle);
                 fragmentTransaction.replace(R.id.fragment_container, fragment)
-                        .addToBackStack(null)
+                        .addToBackStack("savednews")
                         .commit();
             }
         };
