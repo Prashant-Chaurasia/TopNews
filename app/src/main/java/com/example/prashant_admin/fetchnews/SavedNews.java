@@ -38,7 +38,7 @@ public class SavedNews extends Fragment{
                 container, false);
         newsDBHelper = new NewsDBHelper(getContext());
         dbNews = newsDBHelper.getReadableDatabase();
-        String sortOrder = "saveTime";
+        String sortOrder = "saveTime DESC";
         Cursor cursor = dbNews.query(
                 NewsEntry.TABLE_NAME,
                 null,
@@ -87,5 +87,11 @@ public class SavedNews extends Fragment{
                         .commit();
             }
         };
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        Objects.requireNonNull(getActivity()).setTitle(R.string.saved_news);
     }
 }

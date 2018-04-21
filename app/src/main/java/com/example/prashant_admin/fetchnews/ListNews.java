@@ -94,4 +94,10 @@ public class ListNews extends Fragment {
             }
         };
     }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        Objects.requireNonNull(getActivity()).setTitle(R.string.home);
+    }
 }

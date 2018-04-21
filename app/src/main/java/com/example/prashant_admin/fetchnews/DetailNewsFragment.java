@@ -49,6 +49,8 @@ public class DetailNewsFragment extends Fragment {
         View view =  inflater.inflate(R.layout.fragment_detail_news, container, false);
         News news = (News) getArguments().getParcelable("news");
 
+        (Objects.requireNonNull(getActivity())).setTitle(R.string.post);
+
         newsDBHelper = new NewsDBHelper(getContext());
         sqLiteDatabaseWrite = newsDBHelper.getWritableDatabase();
         sqLiteDatabaseRead = newsDBHelper.getReadableDatabase();
@@ -93,7 +95,7 @@ public class DetailNewsFragment extends Fragment {
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
         inflater.inflate(R.menu.detail_menu,menu);
         if(newsExist)
-            menu.getItem(0).setIcon(ContextCompat.getDrawable(getContext(),R.drawable.iconstarn));
+            menu.getItem(0).setIcon(ContextCompat.getDrawable(getContext(),R.drawable.ic_star_white_24dp));
     }
 
     @Override
@@ -102,7 +104,7 @@ public class DetailNewsFragment extends Fragment {
             case R.id.menu_save:
                 if(!newsExist){
                     sqLiteDatabaseWrite.insert(NewsEntry.TABLE_NAME,null,contentValues);
-                    item.setIcon(ContextCompat.getDrawable(Objects.requireNonNull(getContext()),R.drawable.iconstarn));
+                    item.setIcon(ContextCompat.getDrawable(Objects.requireNonNull(getContext()),R.drawable.ic_star_white_24dp));
                 }
                 else{
                     Toast.makeText(getContext(),"Post Already Saved",Toast.LENGTH_SHORT).show();
