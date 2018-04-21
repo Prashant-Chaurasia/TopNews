@@ -14,6 +14,10 @@ public class Source implements Parcelable{
     @SerializedName("name")
     String name;
 
+    public Source(){
+
+    }
+
     public Source(String id, String name) {
         this.id = id;
         this.name = name;

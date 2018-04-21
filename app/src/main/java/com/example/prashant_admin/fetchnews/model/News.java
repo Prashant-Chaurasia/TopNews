@@ -34,6 +34,10 @@ public class News implements Parcelable{
         this.publishedAt = publishedAt;
     }
 
+    public News(){
+
+    }
+
     public String getAuthor() {
         return author;
     }

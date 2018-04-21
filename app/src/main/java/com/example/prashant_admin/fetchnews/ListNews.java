@@ -23,6 +23,7 @@ import com.example.prashant_admin.fetchnews.rest.ApiClient;
 import com.example.prashant_admin.fetchnews.rest.ApiInterface;
 import com.example.prashant_admin.fetchnews.util.RecyclerViewOnItemClickListener;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -37,46 +38,55 @@ public class ListNews extends Fragment {
     private static final String TAG = "listnews";
     private final static String API_KEY = "2afd7b026354408f8b13ae1ff7a5b836";
     Map<String, String> data = new HashMap<>();
-    List<News> news;
+    RecyclerViewOnItemClickListener listener;
+    List<News> news = new ArrayList<News>();
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_list_news,
                 container, false);
-        //Toast.makeText(getContext(),"Inside Fragment",Toast.LENGTH_LONG).show();
         data.put("country", "in");
         data.put("apiKey", API_KEY);
         final RecyclerView recyclerView = (RecyclerView) view.findViewById(R.id.recycler_view);
         recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
-        ApiInterface api = ApiClient.getClient().create(ApiInterface.class);
-        Call<NewsResponse> call = api.getTopHeadLines(data);
-        call.enqueue(new Callback<NewsResponse>() {
-            @Override
-            public void onResponse(@NonNull Call<NewsResponse> call, @NonNull Response<NewsResponse> response) {
-                news = response.body().getArticles();
-                RecyclerViewOnItemClickListener listener = new RecyclerViewOnItemClickListener() {
-                    @Override
-                    public void onClick(View view, int position) {
-                        FragmentTransaction fragmentTransaction = Objects.requireNonNull(getActivity()).getSupportFragmentManager().beginTransaction();
-                        Fragment detailNewsFragment = new DetailNewsFragment();
-                        Bundle bundle = new Bundle();
-                        News n = news.get(position);
-                        bundle.putParcelable("news",n);
-                        detailNewsFragment.setArguments(bundle);
-                        fragmentTransaction.replace(R.id.fragment_container,detailNewsFragment)
-                                .addToBackStack(null)
-                                .commit();
-                        //Toast.makeText(getContext(), "Position " + n.getSource().getName(), Toast.LENGTH_SHORT).show();
-                    }
-                };
-                recyclerView.setAdapter(new NewsAdapter(news,R.layout.listitem,getActivity(),listener));
-            }
+        if(news.size() == 0){
+            ApiInterface api = ApiClient.getClient().create(ApiInterface.class);
+            Call<NewsResponse> call = api.getTopHeadLines(data);
+            call.enqueue(new Callback<NewsResponse>() {
+                @Override
+                public void onResponse(@NonNull Call<NewsResponse> call, @NonNull Response<NewsResponse> response) {
+                    news = response.body().getArticles();
+                    setRecyclerViewOnItemClickListener();
+                    recyclerView.setAdapter(new NewsAdapter(news,R.layout.listitem,getActivity(),listener));
+                }
 
-            @Override
-            public void onFailure(Call<NewsResponse> call, Throwable t) {
-                Log.e(TAG, t.toString());
-            }
-        });
+                @Override
+                public void onFailure(Call<NewsResponse> call, Throwable t) {
+                    Log.e(TAG, t.toString());
+                }
+            });
+        }
+        else{
+            setRecyclerViewOnItemClickListener();
+            recyclerView.setAdapter(new NewsAdapter(news,R.layout.listitem,getActivity(),listener));
+        }
         return view;
+    }
+
+    public void setRecyclerViewOnItemClickListener(){
+        listener = new RecyclerViewOnItemClickListener() {
+            @Override
+            public void onClick(View view, int position) {
+                FragmentTransaction fragmentTransaction = Objects.requireNonNull(getActivity()).getSupportFragmentManager().beginTransaction();
+                Fragment detailNewsFragment = new DetailNewsFragment();
+                Bundle bundle = new Bundle();
+                News n = news.get(position);
+                bundle.putParcelable("news",n);
+                detailNewsFragment.setArguments(bundle);
+                fragmentTransaction.replace(R.id.fragment_container,detailNewsFragment)
+                        .addToBackStack(null)
+                        .commit();
+            }
+        };
     }
 }

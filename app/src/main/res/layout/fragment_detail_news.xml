@@ -14,7 +14,7 @@
         <ImageView
             android:id="@+id/DetailImage"
             android:layout_width="match_parent"
-            android:layout_height="200dp"
+            android:layout_height="240dp"
             android:scaleType="fitXY"
             android:src="@drawable/news"/>
 
@@ -54,6 +54,23 @@
                 android:textColor="#999999"
                 tools:text="2018-04-18T17:02:49Z"/>
 
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="By : "/>
+                <TextView
+                    android:id="@+id/DetailAuthor"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    tools:text="Rajat Sharma"/>
+
+            </LinearLayout>
+
             <TextView
                 android:id="@+id/DetailDescription"
                 android:layout_width="match_parent"
@@ -83,8 +100,6 @@
                     android:text="www.google.com"/>
 
             </LinearLayout>
-
-
 
         </LinearLayout>
     </LinearLayout>
