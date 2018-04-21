@@ -16,12 +16,12 @@
     <group android:checkableBehavior="single">
         <item
             android:id="@+id/nav_settings_fragment"
-            android:icon="@android:drawable/ic_menu_preferences"
+            android:icon="@drawable/iconsettingd"
             android:title="@string/preferences" />
 
         <item
             android:id="@+id/nav_exit"
-            android:icon="@android:drawable/arrow_up_float"
+            android:icon="@drawable/iconexit"
             android:title="@string/exit"/>
     </group>
 </menu>

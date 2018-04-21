@@ -8,4 +8,9 @@
     <string name="drawer_close">Close navigation drawer</string>
     <string name="exit">Exit</string>
     <string name="preferences">Preferences</string>
+    <string name="top_news">Top News</string>
+
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="delete">Delete</string>
 </resources>

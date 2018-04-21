@@ -22,6 +22,7 @@ import com.example.prashant_admin.fetchnews.model.NewsResponse;
 import com.example.prashant_admin.fetchnews.rest.ApiClient;
 import com.example.prashant_admin.fetchnews.rest.ApiInterface;
 import com.example.prashant_admin.fetchnews.util.RecyclerViewOnItemClickListener;
+import com.victor.loading.rotate.RotateLoading;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -40,6 +41,7 @@ public class ListNews extends Fragment {
     Map<String, String> data = new HashMap<>();
     RecyclerViewOnItemClickListener listener;
     List<News> news = new ArrayList<News>();
+    private RotateLoading rotateLoading;
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -47,6 +49,8 @@ public class ListNews extends Fragment {
                 container, false);
         data.put("country", "in");
         data.put("apiKey", API_KEY);
+        rotateLoading = (RotateLoading) view.findViewById(R.id.rotateloading);
+        rotateLoading.start();
         final RecyclerView recyclerView = (RecyclerView) view.findViewById(R.id.recycler_view);
         recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
         if(news.size() == 0){
@@ -55,6 +59,7 @@ public class ListNews extends Fragment {
             call.enqueue(new Callback<NewsResponse>() {
                 @Override
                 public void onResponse(@NonNull Call<NewsResponse> call, @NonNull Response<NewsResponse> response) {
+                    rotateLoading.stop();
                     news = response.body().getArticles();
                     setRecyclerViewOnItemClickListener();
                     recyclerView.setAdapter(new NewsAdapter(news,R.layout.listitem,getActivity(),listener));

@@ -77,12 +77,12 @@ public class SavedNews extends Fragment{
             @Override
             public void onClick(View view, int position) {
                 FragmentTransaction fragmentTransaction = Objects.requireNonNull(getActivity()).getSupportFragmentManager().beginTransaction();
-                Fragment detailNewsFragment = new DetailNewsFragment();
+                Fragment fragment = new SavedNewsDetailFragment();
                 Bundle bundle = new Bundle();
                 News n = news.get(position);
                 bundle.putParcelable("news", n);
-                detailNewsFragment.setArguments(bundle);
-                fragmentTransaction.replace(R.id.fragment_container, detailNewsFragment)
+                fragment.setArguments(bundle);
+                fragmentTransaction.replace(R.id.fragment_container, fragment)
                         .addToBackStack(null)
                         .commit();
             }

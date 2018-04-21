@@ -1,10 +1,7 @@
 package com.example.prashant_admin.fetchnews;
 
 import android.content.ContentValues;
-import android.content.Context;
-import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
-import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.content.ContextCompat;
@@ -23,12 +20,14 @@ import com.example.prashant_admin.fetchnews.database.NewsDBHelper;
 import com.example.prashant_admin.fetchnews.model.News;
 import com.koushikdutta.ion.Ion;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Objects;
 
 import static com.example.prashant_admin.fetchnews.database.NewsContract.*;
 
 
-public class DetailNewsFragment extends Fragment {
+public class SavedNewsDetailFragment extends Fragment {
     private ImageView detailImage;
     private TextView detailTitle;
     private TextView detailNewsSource;
@@ -37,10 +36,8 @@ public class DetailNewsFragment extends Fragment {
     private TextView detailNewsUrl;
     private TextView detailNewsAuthor;
     private NewsDBHelper newsDBHelper;
-    private SQLiteDatabase sqLiteDatabaseWrite;
-    private SQLiteDatabase sqLiteDatabaseRead;
-    private ContentValues contentValues;
-    private Boolean newsExist = false;
+    private SQLiteDatabase sqLiteDatabase;
+    private List<String> contentValues;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -50,9 +47,8 @@ public class DetailNewsFragment extends Fragment {
         News news = (News) getArguments().getParcelable("news");
 
         newsDBHelper = new NewsDBHelper(getContext());
-        sqLiteDatabaseWrite = newsDBHelper.getWritableDatabase();
-        sqLiteDatabaseRead = newsDBHelper.getReadableDatabase();
-        contentValues = new ContentValues();
+        sqLiteDatabase = newsDBHelper.getWritableDatabase();
+        contentValues = new ArrayList<String>();
 
         detailImage = (ImageView) view.findViewById(R.id.DetailImage);
         detailTitle = (TextView) view.findViewById(R.id.DetailTitle);
@@ -69,17 +65,10 @@ public class DetailNewsFragment extends Fragment {
         detailNewsUrl.setText(news.getUrl());
         detailNewsAuthor.setText(news.getAuthor());
 
-        newsExist = entryExist(news);
-        if(!newsExist) {
-            contentValues.put(NewsEntry.COLUMN_ID, news.getSource().getId());
-            contentValues.put(NewsEntry.COLUMN_NAME, news.getSource().getName());
-            contentValues.put(NewsEntry.COLUMN_AUTHOR, news.getAuthor());
-            contentValues.put(NewsEntry.COLUMN_DESCRIPTION, news.getDescription());
-            contentValues.put(NewsEntry.COLUMN_TITLE, news.getTitle());
-            contentValues.put(NewsEntry.COLUMN_URL, news.getUrl());
-            contentValues.put(NewsEntry.COLUMN_URL_TO_IMAGE, news.getUrlToImage());
-            contentValues.put(NewsEntry.COLUMN_PUBLISHED_AT, news.getPublishedAt());
-        }
+        //Arguments to pass in sql query as they will be non - null;
+        contentValues.add(news.getUrl());
+        contentValues.add(news.getUrlToImage());
+        contentValues.add(news.getPublishedAt());
 
         Ion.with(detailImage)
                 .placeholder(R.drawable.placeholder)
@@ -91,38 +80,27 @@ public class DetailNewsFragment extends Fragment {
 
     @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
-        inflater.inflate(R.menu.detail_menu,menu);
-        if(newsExist)
-            menu.getItem(0).setIcon(ContextCompat.getDrawable(getContext(),R.drawable.iconstarn));
+        inflater.inflate(R.menu.saved_menu,menu);
     }
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()){
-            case R.id.menu_save:
-                if(!newsExist){
-                    sqLiteDatabaseWrite.insert(NewsEntry.TABLE_NAME,null,contentValues);
-                    item.setIcon(ContextCompat.getDrawable(Objects.requireNonNull(getContext()),R.drawable.iconstarn));
-                }
-                else{
-                    Toast.makeText(getContext(),"Post Already Saved",Toast.LENGTH_SHORT).show();
-                }
-
+            case R.id.menu_delete:
+                sqLiteDatabase.delete(NewsEntry.TABLE_NAME,
+                         NewsEntry.COLUMN_URL + " = ? AND "+ NewsEntry.COLUMN_URL_TO_IMAGE + " = ? AND " + NewsEntry.COLUMN_PUBLISHED_AT + " = ?",
+                        contentValues.toArray(new String[contentValues.size()]));
+                Toast.makeText(getContext(),"Successfully Deleted the Post",Toast.LENGTH_SHORT).show();
+                Objects.requireNonNull(getActivity()).getSupportFragmentManager().popBackStack();
+                Fragment fragment = new SavedNews();
+                getActivity().getSupportFragmentManager().beginTransaction()
+                        .replace(R.id.fragment_container,fragment)
+                        .addToBackStack(null)
+                        .commit();
                 break;
-            case R.id.menu_share:
+            case R.id.menu_save_share:
                 break;
         }
         return super.onOptionsItemSelected(item);
-    }
-    public boolean entryExist(News news)
-    {
-        Cursor cursor = null;
-        String checkQuery = "SELECT * " + " FROM " + NewsEntry.TABLE_NAME + " WHERE "
-                + NewsEntry.COLUMN_URL + " = '" + news.getUrl() + "' AND "
-                + NewsEntry.COLUMN_PUBLISHED_AT + " = '" + news.getPublishedAt() +"'";
-        cursor= sqLiteDatabaseRead.rawQuery(checkQuery,null);
-        boolean exists = (cursor.getCount() > 0);
-        cursor.close();
-        return exists;
     }
 }
