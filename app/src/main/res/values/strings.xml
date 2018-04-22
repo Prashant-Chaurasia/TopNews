@@ -14,4 +14,9 @@
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="delete">Delete</string>
     <string name="post">Post</string>
+    <string name="by">By :</string>
+    <string name="source">Source:</string>
+    <string name="filter">Filter</string>
+    <string name="sort">Sort</string>
+    <string name="choose">Choose</string>
 </resources>

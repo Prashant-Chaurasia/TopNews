@@ -7,7 +7,7 @@
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="wrap_content"
         tools:context=".DetailNewsFragment"
         android:orientation="vertical">
 
@@ -62,7 +62,7 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="By : "/>
+                    android:text="@string/by"/>
                 <TextView
                     android:id="@+id/DetailAuthor"
                     android:layout_width="wrap_content"
@@ -90,14 +90,14 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Source: "/>
+                    android:text="@string/source"/>
 
                 <TextView
                     android:id="@+id/DetailNewsUrl"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:autoLink="web"
-                    android:text="www.google.com"/>
+                    android:text=""/>
 
             </LinearLayout>
 

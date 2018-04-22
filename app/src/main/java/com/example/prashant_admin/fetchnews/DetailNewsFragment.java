@@ -1,10 +1,9 @@
 package com.example.prashant_admin.fetchnews;
 
 import android.content.ContentValues;
-import android.content.Context;
+import android.content.Intent;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
-import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.content.ContextCompat;
@@ -17,14 +16,10 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
-
-import com.example.prashant_admin.fetchnews.database.NewsContract;
 import com.example.prashant_admin.fetchnews.database.NewsDBHelper;
 import com.example.prashant_admin.fetchnews.model.News;
 import com.koushikdutta.ion.Ion;
-
 import java.util.Objects;
-
 import static com.example.prashant_admin.fetchnews.database.NewsContract.*;
 
 
@@ -41,13 +36,14 @@ public class DetailNewsFragment extends Fragment {
     private SQLiteDatabase sqLiteDatabaseRead;
     private ContentValues contentValues;
     private Boolean newsExist = false;
+    private News news;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View view =  inflater.inflate(R.layout.fragment_detail_news, container, false);
-        News news = (News) getArguments().getParcelable("news");
+        news = (News) getArguments().getParcelable("news");
 
         (Objects.requireNonNull(getActivity())).setTitle(R.string.post);
 
@@ -112,6 +108,11 @@ public class DetailNewsFragment extends Fragment {
 
                 break;
             case R.id.menu_share:
+                Intent i=new Intent(android.content.Intent.ACTION_SEND);
+                i.setType("text/plain");
+                i.putExtra(android.content.Intent.EXTRA_SUBJECT,"News Post");
+                i.putExtra(android.content.Intent.EXTRA_TEXT, news.getUrl());
+                startActivity(Intent.createChooser(i,"Share via"));
                 break;
         }
         return super.onOptionsItemSelected(item);

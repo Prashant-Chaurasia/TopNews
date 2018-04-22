@@ -1,5 +1,6 @@
 package com.example.prashant_admin.fetchnews;
 
+import android.content.DialogInterface;
 import android.content.res.Configuration;
 import android.support.design.widget.NavigationView;
 import android.support.v4.app.Fragment;
@@ -7,6 +8,7 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
@@ -40,7 +42,7 @@ public class MainActivity extends AppCompatActivity {
         setTitle(R.string.home);
         navigationView.setCheckedItem(R.id.nav_home_fragment);
         isHomeActive = true;
-        getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,fragment).commit();
+        getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,fragment,"Home_Fragment").commit();
     }
 
     @Override
@@ -48,10 +50,9 @@ public class MainActivity extends AppCompatActivity {
         if (mDrawer.isDrawerOpen(GravityCompat.START)) {
             mDrawer.closeDrawer(GravityCompat.START);
         }else if (isHomeActive){
-            super.onBackPressed();
+            showLogoutDialog();
         }
-        else if (lastSelectedNavItem == R.id.nav_saved_fragment ||
-                lastSelectedNavItem == R.id.nav_settings_fragment){
+        else if (getSupportFragmentManager().getBackStackEntryCount() == 1){
             getSupportFragmentManager().popBackStack();
             navigationView.getMenu().getItem(0).setChecked(true);
             setTitle(R.string.home);
@@ -97,7 +98,16 @@ public class MainActivity extends AppCompatActivity {
                 break;
             case R.id.nav_home_fragment:
                 fragmentClass = ListNews.class;
+                break;
+                //to be implemented with the help of shared preferences.
+            /*case R.id.nav_settings_fragment:
+                Toast.makeText(this,"Not implemented yet",Toast.LENGTH_SHORT).show();
+                break;*/
+            case R.id.nav_exit:
+                finish();
+                System.exit(0);
             default:
+                lastSelectedNavItem = R.id.nav_home_fragment;
                 fragmentClass = ListNews.class;
 
         }
@@ -111,7 +121,7 @@ public class MainActivity extends AppCompatActivity {
         isHomeActive = R.id.nav_home_fragment == lastSelectedNavItem;
         FragmentManager fragmentManager = getSupportFragmentManager();
         if (isHomeActive) {
-            fragmentManager.beginTransaction().replace(R.id.fragment_container, fragment).commit();
+            fragmentManager.beginTransaction().replace(R.id.fragment_container, fragment,"Home_Fragment").commit();
         } else {
             fragmentManager.beginTransaction().replace(R.id.fragment_container, fragment).addToBackStack(null).commit();
         }
@@ -137,4 +147,24 @@ public class MainActivity extends AppCompatActivity {
         super.onConfigurationChanged(newConfig);
         actionBarDrawerToggle.onConfigurationChanged(newConfig);
     }
+
+    public void showLogoutDialog(){
+        new AlertDialog.Builder(this)
+                .setIcon(android.R.drawable.ic_dialog_alert)
+                .setMessage("Are you sure you want to close this activity?")
+                .setPositiveButton("Yes", new DialogInterface.OnClickListener()
+                {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        finish();
+                    }
+
+                })
+                .setNegativeButton("No", null)
+                .show();
+    }
+    public void setHomeActive(boolean homeActive) {
+        isHomeActive = homeActive;
+    }
+
 }

@@ -11,8 +11,8 @@ import retrofit2.http.QueryMap;
 
 public interface ApiInterface {
 
-    @GET("/v2/")
-    Call<NewsResponse> getSources();
+    @GET("/v2/everything")
+    Call<NewsResponse> getSources(@QueryMap Map<String,String> options);
 
     @GET("v2/top-headlines")
     Call<NewsResponse> getTopHeadLines(@QueryMap Map<String,String> options);

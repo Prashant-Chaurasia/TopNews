@@ -1,6 +1,7 @@
 package com.example.prashant_admin.fetchnews;
 
 import android.content.ContentValues;
+import android.content.Intent;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -38,13 +39,13 @@ public class SavedNewsDetailFragment extends Fragment {
     private NewsDBHelper newsDBHelper;
     private SQLiteDatabase sqLiteDatabase;
     private List<String> contentValues;
-
+    private News news;
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View view =  inflater.inflate(R.layout.fragment_detail_news, container, false);
-        News news = (News) getArguments().getParcelable("news");
+        news = (News) getArguments().getParcelable("news");
 
         newsDBHelper = new NewsDBHelper(getContext());
         sqLiteDatabase = newsDBHelper.getWritableDatabase();
@@ -99,6 +100,11 @@ public class SavedNewsDetailFragment extends Fragment {
                         .commit();
                 break;
             case R.id.menu_save_share:
+                Intent i=new Intent(android.content.Intent.ACTION_SEND);
+                i.setType("text/plain");
+                i.putExtra(android.content.Intent.EXTRA_SUBJECT,"News Post");
+                i.putExtra(android.content.Intent.EXTRA_TEXT, news.getUrl());
+                startActivity(Intent.createChooser(i,"Share via"));
                 break;
         }
         return super.onOptionsItemSelected(item);

@@ -12,6 +12,7 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 
 import com.example.prashant_admin.fetchnews.adapter.NewsAdapter;
 import com.example.prashant_admin.fetchnews.database.NewsContract;
@@ -27,14 +28,14 @@ import java.util.Objects;
 import static com.example.prashant_admin.fetchnews.database.NewsContract.*;
 
 public class SavedNews extends Fragment{
-    NewsDBHelper newsDBHelper;
-    SQLiteDatabase dbNews;
-    RecyclerViewOnItemClickListener listener;
-    List<News> news = new ArrayList<News>();
+    private NewsDBHelper newsDBHelper;
+    private SQLiteDatabase dbNews;
+    private RecyclerViewOnItemClickListener listener;
+    private List<News> news = new ArrayList<News>();
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_list_news,
+        View view = inflater.inflate(R.layout.fragment_saved_news,
                 container, false);
         newsDBHelper = new NewsDBHelper(getContext());
         dbNews = newsDBHelper.getReadableDatabase();
@@ -65,7 +66,7 @@ public class SavedNews extends Fragment{
             }
         }
         cursor.close();
-        final RecyclerView recyclerView = (RecyclerView) view.findViewById(R.id.recycler_view);
+        final RecyclerView recyclerView = (RecyclerView) view.findViewById(R.id.recycler_view1);
         recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
         setRecyclerViewOnItemClickListener();
         recyclerView.setAdapter(new NewsAdapter(news,R.layout.listitem,getActivity(),listener));
@@ -82,6 +83,7 @@ public class SavedNews extends Fragment{
                 News n = news.get(position);
                 bundle.putParcelable("news", n);
                 fragment.setArguments(bundle);
+                fragmentTransaction.setCustomAnimations(android.R.animator.fade_in, android.R.animator.fade_out);
                 fragmentTransaction.replace(R.id.fragment_container, fragment)
                         .addToBackStack("savednews")
                         .commit();
